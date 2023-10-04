@@ -1,4 +1,4 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from .form import SignUpForm
@@ -43,3 +43,13 @@ def register_user(request):
         form = SignUpForm()
         return render(request,'register.html',{'form' : form })
     return render(request, 'register.html', {'form': form})
+
+
+def customer_record(request, pk):
+    if request.user.is_authenticated:
+        customer_record = Record.objects.get(id=pk)
+        return render(request, 'record.html',{'customer_record' : customer_record})
+    else:
+        messages.success(request, "You Must Be Logged In To View Page!")
+        return redirect('home')
+
